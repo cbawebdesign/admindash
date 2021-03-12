@@ -1,0 +1,568 @@
+<fa-layout>
+  <!-- Page Header -->
+  <div class="page-header row no-gutters py-4">
+    <div class="col-12 text-center text-sm-left mb-0">
+      <span class="text-uppercase page-subtitle">{{ 'Users' | translate }}</span>
+      <h3 class="page-title">{{ 'EditUser' | translate }}</h3>
+    </div>
+  </div>
+  <!-- End Page Header -->
+  <!-- Default Light Table -->
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card card-small mb-4 pt-3">
+        <div class="card-header border-bottom text-center">
+          <div class="edit-user-details__avatar mb-3 mx-auto">
+            <img [src]="avatarSrc | escapeUrl" alt="User Avatar">
+            <label class="edit-user-details__avatar__change">
+              <i class="material-icons mr-1">&#xE439;</i>
+              <input type="file" accept="image/*" id="userProfilePicture" class="d-none" (change)="onAvatarChange($event)">
+            </label>
+          </div>
+          <h4 class="mb-0" title="{{ (userData?.birthDate | shortdate) || '' }}">
+            {{ (userData?.firstName || '') + ' ' + (userData?.lastName || '') }}
+          </h4>
+          <span class="text-muted d-block mb-2">{{ allRoles[userData?.role] || '' }}</span>
+          <button type="button" class="mb-2 btn btn-sm btn-pill btn-outline-primary mr-2" [routerLink]="navigation.getRouterLink('users', 'profile', id || '')">
+            <i class="material-icons mr-1">person</i>{{ 'Profile' | translate }}
+          </button>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item px-4">
+            <strong class="text-muted d-block mb-2">{{ 'Email' | translate }}</strong>
+            <span>{{ userData?.email || '' }}</span>
+          <!-- </li>
+            <li class="list-group-item px-4">
+              <strong class="text-muted d-block mb-2">{{ 'Email' | translate }}</strong>
+              <span>{{ userData?.email1 || '' }}</span>
+            </li> -->
+          <!-- <li class="list-group-item p-4">
+            <strong class="text-muted d-block mb-2">{{ 'Bio' | translate }}</strong>
+            <span>{{ userData?.bio || '' }}</span>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card card-small mb-4">
+        <div class="card-header border-bottom">
+          <h6 class="m-0">{{ 'UserDetails' | translate }}</h6>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item p-3">
+            <div class="row">
+              <div class="col">
+                <form #editUserForm>
+
+                  <div class="form-group col-md-6">
+                    <label for="businessName">{{ 'Legal Name' | translate }}</label>
+                    <input type="text" class="form-control" id="businessName" [(ngModel)]="businessName" name="businessName" >
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="displayEmail">{{ 'Role' | translate }}</label>
+                    <select class="custom-select" [(ngModel)]="role" name="role">
+                      <option *ngFor="let role of allRoles | keyvalue; let i = index" [value]="role.key">{{ role.value | translate }}</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group col-md-6">
+                    <label for="firstName">{{ 'FirstName' | translate }}</label>
+                    <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" name="firstName"  required #firstNameInput>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="lastName">{{ 'LastName' | translate }}</label>
+                    <input type="text" class="form-control" id="lastName" [(ngModel)]="lastName" name="lastName" required #lastNameInput>
+                  </div>
+                  
+                  <div class="form-group col-md-6">
+                    <label for="emailAddress">{{ 'Email'}}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xE0BE;</i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" id="emailAddress" [(ngModel)]="email" name="email"  #emailInput>
+                    </div>
+                  </div> 
+                  <div class="form-group col-md-6">
+                    <label for="password">{{ 'Password' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">lock</i>
+                        </div>
+                      </div>
+                      <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password">
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="emailAddress">{{ 'Email' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xE0BE;</i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" id="emailAddress" [(ngModel)]="email1" name="email1" #emailInput>
+                    </div>
+                  </div> 
+                  
+                  <div class="form-group col-md-6">
+                    <label for="contact1">{{ 'Contact' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xe853;
+
+
+
+                          </i>
+                        </div>
+                      </div>
+                      <input type="contact1" class="form-control" id="contact1" [(ngModel)]="contact1" name="contact1" >
+                        </div>
+                    </div>
+             
+             
+             
+                  <div class="form-group col-md-6">
+                    <label for="emailAddress">{{ 'Email' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xE0BE;</i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" id="emailAddress" [(ngModel)]="email2" name="email2"   #emailInput>
+                    </div>
+                  </div>
+                    <div class="form-group col-md-6">
+                      <label for="contact1">{{ 'Contact' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xe853;
+
+
+
+                            </i>
+                          </div>
+                        </div>
+                        <input type="contact2" class="form-control" id="contact2" [(ngModel)]="contact2" name="contact2"  #emailInput>
+                          </div>
+                      </div>
+
+                   <div class="form-group col-md-6">
+                    <label for="emailAddress">{{ 'Email' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xE0BE;</i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" id="emailAddress3" [(ngModel)]="email3" name="email3" >
+                    </div>
+                  </div>      
+
+                  <div class="form-group col-md-6">
+                    <label for="contact1">{{ 'Contact' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xe853;
+
+
+
+                          </i>
+                        </div>
+                      </div>
+                      <input type="contact3" class="form-control" id="contact3" [(ngModel)]="contact3" name="contact3"  #emailInput>
+                        </div>
+                    </div>
+
+                  
+                  <div class="form-group col-md-6">
+                    <label for="emailAddress">{{ 'Email' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xE0BE;</i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" id="emailAddress4" [(ngModel)]="email4" name="email4" >
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="contact1">{{ 'Contact' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xe853;
+
+
+
+                          </i>
+                        </div>
+                      </div>
+                      <input type="contact1" class="form-control" id="contact4" [(ngModel)]="contact4" name="contact4" >
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="emailAddress">{{ 'Email' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xE0BE;</i>
+                          </div>
+                        </div>
+                        <input type="email" class="form-control" id="emailAddress5" [(ngModel)]="email5" name="email5" >
+                      </div>
+  
+                    </div>  
+
+                    <div class="form-group col-md-6">
+                      <label for="contact1">{{ 'Contact' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xe853;
+
+
+
+                            </i>
+                          </div>
+                        </div>
+                        <input type="contact5" class="form-control" id="contact5" [(ngModel)]="contact5" name="contact5"  #emailInput>
+                          </div>
+                      </div>
+
+                  
+
+                   <div class="form-group col-md-6">
+                    <label for="emailAddress">{{ 'Email' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xE0BE;</i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" id="emailAddress6" [(ngModel)]="email6" name="email6" >
+                    </div>
+                  </div>     
+                  
+                  <div class="form-group col-md-6">
+                    <label for="contact1">{{ 'Contact' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xe853;
+
+
+
+                          </i>
+                        </div>
+                      </div>
+                      <input type="contact6" class="form-control" id="contact6" [(ngModel)]="contact6" name="contact6"  #emailInput>
+                        </div>
+                    </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="emailAddress">{{ 'Email' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xE0BE;</i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" id="emailAddress7" [(ngModel)]="email7" name="email7" >
+                    </div>
+                  </div>     
+                  
+                  <div class="form-group col-md-6">
+                    <label for="contact1">{{ 'Contact' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xe853;
+
+
+
+                          </i>
+                        </div>
+                      </div>
+                      <input type="contact7" class="form-control" id="contact7" [(ngModel)]="contact7" name="contact7"  #emailInput>
+                        </div>
+                    </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="emailAddress">{{ 'Email' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xE0BE;</i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" id="emailAddress8" [(ngModel)]="email8" name="email8" >
+                    </div>
+                  </div>      
+                  
+                  
+                  <div class="form-group col-md-6">
+                    <label for="contact1">{{ 'Contact' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xe853;
+
+
+
+                          </i>
+                        </div>
+                      </div>
+                      <input type="contact8" class="form-control" id="contact8" [(ngModel)]="contact8" name="contact8"  #emailInput>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="emailAddress">{{ 'Email' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xE0BE;</i>
+                          </div>
+                        </div>
+                        <input type="email" class="form-control" id="emailAddress9" [(ngModel)]="email9" name="email9" #emailInput >
+                      </div>
+                    </div>      
+                    
+
+                        
+                  <div class="form-group col-md-6">
+                    <label for="contact9">{{ 'Contact' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="material-icons">&#xe853;
+
+
+
+                          </i>
+                        </div>
+                      </div>
+                      <input type="contact9" class="form-control" id="contact9" [(ngModel)]="contact9" name="contact9" >
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-6">
+                      <label for="emailAddress">{{ 'Email' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xE0BE;</i>
+                          </div>
+                        </div>
+                        <input type="email" class="form-control" id="emailAddress10" [(ngModel)]="email10" name="email10" >
+                      </div>
+                    </div>      
+
+
+                    <div class="form-group col-md-6">
+                      <label for="contact1">{{ 'Contact' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xe853;
+
+
+
+                            </i>
+                          </div>
+                        </div>
+                        <input type="contact10" class="form-control" id="contact10" [(ngModel)]="contact10" name="contact10"  #emailInput>
+                          </div>
+                      </div>
+
+
+                    <div class="form-group col-md-6">
+                      <label for="emailAddress">{{ 'Email' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xE0BE;</i>
+                          </div>
+                        </div>
+                        <input type="email" class="form-control" id="emailAddress11" [(ngModel)]="email11" name="email11" >
+                      </div>
+                    </div>    
+
+
+                    <div class="form-group col-md-6">
+                      <label for="contact1">{{ 'Contact' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xe853;
+
+
+
+                            </i>
+                          </div>
+                        </div>
+                        <input type="contact11" class="form-control" id="contact11" [(ngModel)]="contact11" name="contact11"  #emailInput>
+                          </div>
+                      </div>
+
+                      <div class="form-group col-md-6">
+                        <label for="emailAddress">{{ 'Email' | translate }}</label>
+                        <div class="input-group input-group-seamless">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="material-icons">&#xE0BE;</i>
+                            </div>
+                          </div>
+                          <input type="email" class="form-control" id="emailAddress11" [(ngModel)]="email11" name="email11" >
+                        </div>
+                      </div>    
+  
+  
+                      <div class="form-group col-md-6">
+                        <label for="contact1">{{ 'Contact' | translate }}</label>
+                        <div class="input-group input-group-seamless">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="material-icons">&#xe853;
+
+
+
+                              </i>
+                            </div>
+                          </div>
+                          <input type="contact11" class="form-control" id="contact11" [(ngModel)]="contact11" name="contact11"  #emailInput>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                          <label for="emailAddress">{{ 'Email' | translate }}</label>
+                          <div class="input-group input-group-seamless">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="material-icons">&#xE0BE;</i>
+                              </div>
+                            </div>
+                            <input type="email" class="form-control" id="emailAddress12" [(ngModel)]="email12" name="email12" >
+                          </div>
+                        </div>    
+    
+    
+                        <div class="form-group col-md-6">
+                          <label for="contact1">{{ 'Contact' | translate }}</label>
+                          <div class="input-group input-group-seamless">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="material-icons">&#xe853;
+
+
+
+                                </i>
+                              </div>
+                            </div>
+                            <input type="contact12" class="form-control" id="contact12" [(ngModel)]="contact12" name="contact12"  #emailInput>
+                              </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label for="emailAddress">{{ 'Email' | translate }}</label>
+                            <div class="input-group input-group-seamless">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <i class="material-icons">&#xE0BE;</i>
+                                </div>
+                              </div>
+                              <input type="email" class="form-control" id="emailAddress13" [(ngModel)]="email13" name="email13" >
+                            </div>
+                          </div>    
+      
+      
+                          <div class="form-group col-md-6">
+                            <label for="contact1">{{ 'Contact' | translate }}</label>
+                            <div class="input-group input-group-seamless">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <i class="material-icons">&#xe853;
+
+
+
+                                  </i>
+                                </div>
+                              </div>
+                              <input type="contact11" class="form-control" id="contact13" [(ngModel)]="contact13" name="contact13"  #emailInput>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                              <label for="emailAddress">{{ 'Email' | translate }}</label>
+                              <div class="input-group input-group-seamless">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text">
+                                    <i class="material-icons">&#xE0BE;</i>
+                                  </div>
+                                </div>
+                                <input type="email" class="form-control" id="emailAddress14" [(ngModel)]="email14" name="email14" >
+                              </div>
+                            </div>    
+        
+        
+                            <div class="form-group col-md-6">
+                              <label for="contact1">{{ 'Contact' | translate }}</label>
+                              <div class="input-group input-group-seamless">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text">
+                                    <i class="material-icons">&#xe853;
+
+
+
+                                    </i>
+                                  </div>
+                                </div>
+                                <input type="contact11" class="form-control" id="contact14" [(ngModel)]="contact14" name="contact14"  #emailInput>
+                                  </div>
+                              </div>
+      
+                  <div class="form-row">
+                    <!-- <div class="form-group col-md-6">
+                      <label for="birthDate">{{ 'BirthDate' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">calendar_today</i>
+                          </div>
+                        </div>
+                        <input type="date" class="form-control" id="birthDate" [(ngModel)]="birthDate" name="birthDate">
+                      </div> -->
+                    </div>
+                 
+                  <!-- <div class="form-row">
+                    <div class="form-group col-md-8">
+                      <label for="userBio">{{ 'Bio' | translate }}</label>
+                      <textarea style="min-height: 87px;" id="userBio" [(ngModel)]="bio" name="userBio" class="form-control" placeholder="{{ 'BioPlaceholder' | translate }}"></textarea>
+                    </div>
+                  </div> -->
+                  <button type="submit" class="btn btn-accent" [disabled]="updateButon.isDisabled" (click)="updateUser($event, editUserForm)" #updateButon>
+                    {{ 'UpdateUser' | translate }} <i *ngIf="updateButon.isLoading" class="fas fa-circle-notch fa-spin ml-1"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- End Default Light Table -->
+</fa-layout>
+

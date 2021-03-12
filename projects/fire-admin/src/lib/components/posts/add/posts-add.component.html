@@ -1,0 +1,223 @@
+<fa-layout>
+  <!-- Page Header -->
+  <div class="page-header row no-gutters py-4">
+    <div class="col-12 text-center text-sm-left mb-0">
+      <span class="text-uppercase page-subtitle">{{ 'LP Document Upload' | translate }}</span>
+      <h3 class="page-title">{{ 'New Document Upload' | translate }}</h3>
+    </div>
+  </div>
+  <!-- End Page Header -->
+  <div class="row">
+    <div class="col-lg-5 col-md-6">
+      <!-- Add New Post Form -->
+      <div class="card card-small mb-3">
+        <!-- <div class="card-body">
+          <form class="add-new-post">
+            <input class="form-control form-control-lg mb-3" type="text" placeholder="{{ 'Notes' | translate }}" [(ngModel)]="title" name="title" (input)="onTitleInput()"> -->
+            <!-- <div id="editor-container" class="add-new-post__editor mb-1"></div> 
+           </form>
+        </div>  -->
+      </div>
+      <!-- / Add New Post Form -->
+    </div>
+    <!-- <div class="yo"> -->
+    <div class="col-lg-9 col-md-9">
+      <!-- Post Overview -->
+      <div class="card card-small mb-3">
+        <div class="card-header border-bottom">
+          <h6 class="m-0">{{ 'Actions' | translate }}</h6>
+        </div>
+        <div class="card-body p-0">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item p-3">
+              <span class="d-flex mb-2"> 
+                <i class="material-icons mr-1 mt-1">supervisor_account</i><span class="mr-1 mt-1">Language</span> 
+                 <select class="custom-select col-md-7 ml-auto" [(ngModel)]="language" name="language" (change)="onLanguageChange()"> 
+                   <option *ngFor="let lang of languages" [value]="lang.key">{{ lang.label | translate }}</option> 
+                 </select>
+              </span>
+              <!-- <span class="d-flex mb-2">
+                <i class="material-icons mr-1 mt-1">link</i><span class="mr-1 mt-1">{{ 'PostSlug' | translate }}:</span>
+                <input type="text" class="form-control col-md-7 ml-auto" [(ngModel)]="slug" name="slug">
+              </span>  -->
+              <span class="d-flex mb-2">
+                <i class="material-icons mr-1 mt-1">calendar_today</i><span class="mr-1 mt-1">{{ 'PostDate' | translate }}:</span>
+                <input type="date" class="form-control col-md-7 ml-auto" [(ngModel)]="date" name="date">
+              </span>
+            </li>
+            <li class="list-group-item d-flex px-3 pt-0">
+              <button class="btn btn-sm btn-outline-accent mr-3"  (click)="addPost($event)" #saveDraftButton>
+                <i class="material-icons">save</i> {{ 'SaveDraft' | translate }} <i *ngIf="saveDraftButton.isLoading" class="fas fa-circle-notch fa-spin ml-1"></i>
+              </button>
+              <button class="btn btn-sm btn-accent ml-auto" [disabled]="isSubmitButtonsDisabled || !date?.length" (click)="publishPost($event)" #publishButton>
+                <i class="material-icons">file_copy</i> {{ 'Publish' | translate }} <i *ngIf="publishButton.isLoading" class="fas fa-circle-notch fa-spin ml-1"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- </div> -->
+      <!-- / Post Overview -->
+      <!-- Post Overview -->
+      <div class="card card-small mb-3">
+        <div class="card-header border-bottom cursor-pointer" (click)="imageCardHeader.isToggled = !imageCardHeader.isToggled" #imageCardHeader>
+          <h6 class="m-0">{{ 'Add Documents' | translate }}</h6>
+          <div class="block-handle"></div>
+        </div>
+        <div class="list-group-item px-3 pb-8">
+          <span class="d-flex">
+            <div class="edit-user-details__avatar rounded-0"  (click)="postImage.click()" #postImage>
+              <img src="assets/images/PDF.png">
+              <!-- <p>Click here to set your document</p> -->
+              <!-- <a>{{ downloadURL | async }}</a> -->
+              <pdf-viewer [src]="pdfSrc"  [rotation]="0" [original-size]="false" [show-all]="false" style="display:block;"></pdf-viewer>            <!-- <img [src]="imageSrc" alt="src/assets/images/logo5.png"> -->
+              <!-- <ngx-extended-pdf-viewer [src]="imageSrc" useBrowserLocale="true" height="80vh"></ngx-extended-pdf-viewer> -->
+      <!-- <ngx-extended-pdf-viewer [src]="pdfSrc"  height="80vh"></ngx-extended-pdf-viewer> -->
+
+              <!-- <img src="assets/images/logo5.png" > -->
+              <label class="edit-user-details__avatar__change rounded-0">
+                <i class="material-icons mr-1">add_a_photo</i>
+                <input type="file"  id="file"
+                accept="image/PDF/*" class="d-none" (change)="onImageChange($event)" >
+              </label>
+              <!-- <pdf-viewer [src]="pdfSrc"></pdf-viewer> -->
+
+            </div>
+
+          </span>
+        </div>
+      </div>
+
+
+      <!-- <ngx-extended-pdf-viewer [src]="pdfSrc" useBrowserLocale="true" height="80vh"></ngx-extended-pdf-viewer> -->
+
+      <!-- / Post Overview -->
+      <!-- Post Overview -->
+      <div class="card card-small mb-3">
+        <div class="card-header border-bottom cursor-pointer" (click)="categoriesCardHeader.isToggled = !categoriesCardHeader.isToggled" #categoriesCardHeader>
+          <h6 class="m-0">{{ 'Document Type' | translate }}</h6>
+          <div class="block-handle"></div>
+        </div>
+        <div class="card-body p-0" [class.d-none]="categoriesCardHeader.isToggled">
+          <ul class="categories-list list-group list-group-flush">
+            <li class="list-group-item px-3 pb-2">
+              <div class="custom-control custom-checkbox mb-1" *ngFor="let category of categoriesObservable | async; let i = index">
+                <input type="checkbox" class="custom-control-input" id="{{ 'category' + i }}" (change)="onCategoryCheck(category, $event)">
+                <label class="custom-control-label" for="{{ 'category' + i }}">{{ category.label }}</label>
+              </div>
+            </li>
+            <li class="list-group-item d-flex px-3">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="{{ 'NewCategory' | translate }}" [(ngModel)]="newCategory">
+                <div class="input-group-append">
+                  <button class="btn btn-white px-2" type="button" [disabled]="!newCategory?.length" (click)="addCategory($event)"><i class="material-icons">add</i></button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- <div class="card card-small mb-3">
+        <div class="card-header border-bottom cursor-pointer" (click)="limitedpartnersCardHeader.isToggled = !limitedpartnersCardHeader.isToggled" #limitedpartnersCardHeader>
+          <h6 class="m-0">{{ 'Limitedpartners Fund1' | translate }}</h6>
+          <div class="block-handle"></div>
+        </div>
+        <div class="card-body p-0" [class.d-none]="limitedpartnersCardHeader.isToggled">
+          <ul class="limitedpartners-list list-group list-group-flush">
+            <li class="list-group-item px-3 pb-2">
+              <div class="custom-control custom-checkbox mb-1" *ngFor="let limitedpartner of limitedpartnersObservable | async; let i = index">
+                <input type="checkbox" class="custom-control-input" id="{{ 'limitedpartner' + i }}" (change)="onLimitedpartnerCheck(limitedpartner, $event)">
+                <label class="custom-control-label" for="{{ 'limitedpartner' + i }}">{{ limitedpartner.label }}</label>
+              </div>
+            </li>
+            <li class="list-group-item d-flex px-3">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="{{ 'NewLimitedpartner' | translate }}" [(ngModel)]="newLimitedpartner">
+                <div class="input-group-append">
+                  <button class="btn btn-white px-2" type="button" [disabled]="!newLimitedpartner?.length" (click)="addLimitedpartner($event)"><i class="material-icons">add</i></button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div> -->
+      <div class="card card-small mb-3">
+        <div class="card-header border-bottom cursor-pointer" (click)="usersCardHeader.isToggled = !usersCardHeader.isToggled" #usersCardHeader>
+          <h6 class="m-0">{{ 'Limitedpartners Fund1' | translate }}</h6>
+          <div class="block-handle"></div>
+        </div>
+        <div class="card-body p-0" [class.d-none]="usersCardHeader.isToggled">
+          <ul class="users-list list-group list-group-flush">
+            <li class="list-group-item px-3 pb-8">
+              <div class="custom-control custom-checkbox mb-1" *ngFor="let user of allUsers | async; let i = index">
+                <!-- <div class="custom-control custom-checkbox mb-1" *ngFor="let user of allUsers | async"> -->
+
+                  <div *ngIf="user.role === 'LPFund1'">
+
+                <input type="checkbox" class="custom-control-input" id="{{ 'user' + i }}" (change)="onUserCheck(user, $event)">
+                <label class="custom-control-label" for="{{ 'user' + i }}">{{ user.businessName }}</label>
+              </div>
+              </div>
+            </li>
+            <li class="list-group-item d-flex px-3">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="{{ 'NewLimitedpartner' | translate }}" [(ngModel)]="newLimitedpartner">
+                <div class="input-group-append">
+                  <button class="btn btn-white px-2" type="button" [disabled]="!newLimitedpartner?.length" (click)="addLimitedpartner($event)"><i class="material-icons">add</i></button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card card-small mb-3">
+        <div class="card-header border-bottom cursor-pointer" (click)="usersCardHeader.isToggled = !usersCardHeader.isToggled" #usersCardHeader>
+          <h6 class="m-0">{{ 'Limited Partners Fund1A' | translate }}</h6>
+          <div class="block-handle"></div>
+        </div>
+        <div class="card-body p-0" [class.d-none]="usersCardHeader.isToggled">
+          <ul class="users-list list-group list-group-flush">
+            <li class="list-group-item px-3 pb-2">
+              <div class="custom-control custom-checkbox mb-1" *ngFor="let user of allUsers | async; let i = index">
+              <div *ngIf="user.role == 'LPFund1A'">
+                <!-- <pdf-viewer [src]="pdfSrc"  scroll="H"></pdf-viewer> -->
+
+                <!-- <input type="file" accept="image/PDF/*" class="d-none" (change)="onImageChange($event)" #postImage> -->
+                <label class="custom-control-label" for="{{ 'user' + i }}">{{ user.businessName }}</label>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item d-flex px-3">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="{{ 'NewLimitedpartner' | translate }}" [(ngModel)]="newLimitedpartner">
+                <div class="input-group-append">
+                  <button class="btn btn-white px-2" type="button" [disabled]="!newLimitedpartner?.length" (click)="addLimitedpartner($event)"><i class="material-icons">add</i></button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- / Post Overview -->
+    </div>
+  </div>
+      <!-- Add New Post Form -->
+   
+          <form class="add-new-post">
+            <input class="form-control form-control-lg mb-3" type="text" placeholder="{{ 'Notes' | translate }}" [(ngModel)]="title" name="title" (input)="onTitleInput()"> 
+            <div id="editor-container" class="add-new-post__editor mb-1"></div> 
+           </form>
+    
+      <!-- / Add New Post Form -->
+</fa-layout>
+
+<style>
+
+pdf-viewer {
+  /* define height */
+  max-height: 700px; /* change height value */
+overflow-y: scroll;
+}
+</style>
